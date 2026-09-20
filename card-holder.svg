@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#dfd7cd"/><stop offset="1" stop-color="#b4a798"/></linearGradient><linearGradient id="l" x1="0" x2="1"><stop stop-color="#4f4a42"/><stop offset="1" stop-color="#1d1c1a"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="30" stdDeviation="25" flood-color="#000" flood-opacity=".22"/></filter></defs>
+<rect width="900" height="900" fill="url(#b)"/><circle cx="220" cy="160" r="250" fill="#fff" opacity=".17"/>
+<g transform="translate(150 210) rotate(-8 300 220)" filter="url(#s)"><rect width="520" height="330" rx="38" fill="url(#l)"/><rect x="42" y="58" width="360" height="250" rx="30" fill="#26231f" stroke="#8e7e68" stroke-opacity=".5"/><path d="M76 120h260M76 167h226M76 214h200" stroke="#bcae9c" stroke-opacity=".32" stroke-width="10" stroke-linecap="round"/><text x="370" y="278" fill="#f5f2ec" font-family="Georgia,serif" font-size="21" letter-spacing="3">AUREN</text></g>
+</svg>
