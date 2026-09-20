@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171716">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<title>Contact — AUREN</title>
+<meta name="description" content="Contact AUREN customer care, partnerships and press.">
+</head>
+</head>
+<body>
+<header class="site-header">
+  <div class="container navbar">
+    <nav class="nav-left" aria-label="Primary">
+      <a class="nav-link " href="shop.html">Shop</a>
+      <a class="nav-link " href="collections.html">Collections</a>
+      <a class="nav-link " href="journal.html">Journal</a>
+      <a class="nav-link " href="about.html">About</a>
+    </nav>
+    <a class="logo" href="index.html" aria-label="AUREN home">AUREN</a>
+    <div class="nav-right">
+      <button class="icon-btn" data-open-search aria-label="Search">Search</button>
+      <a class="icon-btn" href="about.html#contact">Account</a>
+      <button class="icon-btn" data-open-cart aria-label="Open shopping bag">Bag <span class="bag-count" data-bag-count>0</span></button>
+      <button class="mobile-menu-btn" data-mobile-toggle aria-label="Open menu">Menu</button>
+    </div>
+  </div>
+  <nav class="mobile-nav container" aria-label="Mobile primary">
+    <a href="shop.html">Shop</a><a href="collections.html">Collections</a><a href="journal.html">Journal</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a><a href="bag.html">Bag</a>
+  </nav>
+</header>
+<div class="search-overlay" data-search><div class="search-panel"><div class="container"><form class="search-row" data-search-form><input aria-label="Search products" name="q" placeholder="Search the AUREN collection" autocomplete="off"><button type="button" class="close-btn" data-close-search>Close</button></form></div></div></div>
+<div class="drawer" data-drawer><div class="drawer-backdrop" data-drawer-backdrop></div><aside class="drawer-panel" aria-label="Shopping bag"><div class="drawer-head"><span class="label">Your bag</span><button class="close-btn" data-close-cart>Close</button></div><div class="cart-items" data-cart-items></div><div class="cart-footer"><div class="cart-total"><span>Subtotal</span><span data-cart-total>₹0</span></div><a class="btn" href="bag.html" style="width:100%">VIEW BAG</a></div></aside></div>
+<div class="toast" aria-live="polite"></div>
+<div class="modal" data-modal><img src="assets/meridian-wallet.svg" alt="Expanded product image"></div>
+<main><section class="page-hero"><div class="container"><div class="eyebrow label">Contact</div><h1 class="h1" style="margin-top:18px">We would like<br>to hear from you.</h1><p class="lede">Customer questions, stockists, partnerships and press can all start here.</p></div></section><section class="section-tight"><div class="container contact-grid"><div><div class="detail-list"><div><b>General</b><span>hello@auren.example</span></div><div><b>Customer care</b><span>care@auren.example</span></div><div><b>Hours</b><span>Mon–Fri · 10:00–18:00 IST</span></div></div></div><form class="form" onsubmit="event.preventDefault();toast('Thanks — your message has been received');this.reset();"><div><label for="c-name">Name</label><input id="c-name" required></div><div><label for="c-email">Email</label><input id="c-email" type="email" required></div><div><label for="c-topic">Topic</label><input id="c-topic" placeholder="Order, partnership, press…" required></div><div><label for="c-message">Message</label><textarea id="c-message" required></textarea></div><button class="btn" type="submit">Send message</button></form></div></section></main>
+<footer class="footer"><div class="container"><div class="footer-grid"><div><div class="footer-logo">AUREN</div><p class="muted" style="max-width:340px">Designed for the everyday extraordinary.<br>Premium everyday lifestyle and personal accessories.</p></div><div class="footer-col"><h4>Shop</h4><a href="shop.html">All products</a><a href="collections.html">Collections</a><a href="product.html?id=meridian-wallet">Meridian Wallet</a><a href="product.html?id=no-07-sunglasses">No. 07 Sunglasses</a></div><div class="footer-col"><h4>Help</h4><a href="contact.html">Contact</a><a href="faq.html">Shipping</a><a href="faq.html">Returns</a><a href="faq.html">FAQ</a></div><div class="footer-col"><h4>Follow</h4><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">LinkedIn</a></div></div><div class="footer-bottom"><span>© 2026 AUREN</span><span>Quietly considered. Everyday.</span></div></div></footer>
+<script src="script.js"></script>
+</body>
+</html>
