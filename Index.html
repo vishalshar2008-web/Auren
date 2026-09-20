@@ -1,1 +1,64 @@
-# Auren
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171716">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<title>AUREN — Designed for the Everyday Extraordinary.</title>
+<meta name="description" content="AUREN creates thoughtfully designed premium everyday accessories with quiet character.">
+</head>
+</head>
+<body>
+<header class="site-header">
+  <div class="container navbar">
+    <nav class="nav-left" aria-label="Primary">
+      <a class="nav-link " href="shop.html">Shop</a>
+      <a class="nav-link " href="collections.html">Collections</a>
+      <a class="nav-link " href="journal.html">Journal</a>
+      <a class="nav-link " href="about.html">About</a>
+    </nav>
+    <a class="logo" href="index.html" aria-label="AUREN home">AUREN</a>
+    <div class="nav-right">
+      <button class="icon-btn" data-open-search aria-label="Search">Search</button>
+      <a class="icon-btn" href="about.html#contact">Account</a>
+      <button class="icon-btn" data-open-cart aria-label="Open shopping bag">Bag <span class="bag-count" data-bag-count>0</span></button>
+      <button class="mobile-menu-btn" data-mobile-toggle aria-label="Open menu">Menu</button>
+    </div>
+  </div>
+  <nav class="mobile-nav container" aria-label="Mobile primary">
+    <a href="shop.html">Shop</a><a href="collections.html">Collections</a><a href="journal.html">Journal</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a><a href="bag.html">Bag</a>
+  </nav>
+</header>
+<div class="search-overlay" data-search><div class="search-panel"><div class="container"><form class="search-row" data-search-form><input aria-label="Search products" name="q" placeholder="Search the AUREN collection" autocomplete="off"><button type="button" class="close-btn" data-close-search>Close</button></form></div></div></div>
+<div class="drawer" data-drawer><div class="drawer-backdrop" data-drawer-backdrop></div><aside class="drawer-panel" aria-label="Shopping bag"><div class="drawer-head"><span class="label">Your bag</span><button class="close-btn" data-close-cart>Close</button></div><div class="cart-items" data-cart-items></div><div class="cart-footer"><div class="cart-total"><span>Subtotal</span><span data-cart-total>₹0</span></div><a class="btn" href="bag.html" style="width:100%">VIEW BAG</a></div></aside></div>
+<div class="toast" aria-live="polite"></div>
+<div class="modal" data-modal><img src="assets/meridian-wallet.svg" alt="Expanded product image"></div>
+
+<main>
+<section class="hero">
+  <div class="hero-media" role="img" aria-label="AUREN editorial still life of everyday objects"></div>
+  <div class="container hero-content reveal is-visible">
+    <div class="eyebrow label">The AUREN collection — 01</div>
+    <h1 class="display">Designed for the<br>everyday extraordinary.</h1>
+    <p class="lede">Thoughtfully designed essentials that bring function, form and quiet character to the things you carry every day.</p>
+    <div class="hero-actions"><a class="btn light" href="collections.html">Explore collection</a><a class="btn secondary" href="about.html">Discover AUREN</a></div>
+  </div>
+</section>
+<section class="section"><div class="container philosophy reveal"><div><div class="eyebrow label">The AUREN philosophy</div></div><div class="philosophy-copy"><h2 class="h2">Less,<br>but better.</h2><p class="lede">We believe the objects you use every day deserve more thought. AUREN is built around the idea that utility and character can live in the same quiet silhouette.</p></div></div></section>
+<section class="section-tight"><div class="container"><div class="eyebrow label">The everyday edit</div><div id="featured-products" class="products-grid"></div></div></section>
+<section class="section" style="padding-top:110px"><div class="editorial-split reveal"><div class="editorial-visual"><img src="assets/article-everyday.svg" alt="Still life of AUREN everyday objects" loading="lazy"></div><div class="editorial-copy"><div class="eyebrow label">Inside the objects</div><h2 class="h2" style="margin-top:20px">Made to be<br>lived with.</h2><p class="lede">Designed around the rituals of everyday life — from the morning commute to the weekend away.</p><a class="btn" href="journal.html">Explore the journal</a></div></div></section>
+<section class="section-tight"><div class="container"><div class="eyebrow label">Find your everyday</div><div class="collections-grid"><a class="collection-card reveal" href="shop.html?category=Carry"><img src="assets/collection-carry.svg" alt="Carry collection" loading="lazy"><div class="collection-label"><div class="label">01</div><h3>Carry</h3></div></a><a class="collection-card reveal" href="shop.html?category=Wear"><img src="assets/collection-wear.svg" alt="Wear collection" loading="lazy"><div class="collection-label"><div class="label">02</div><h3>Wear</h3></div></a><a class="collection-card reveal" href="shop.html?category=Travel"><img src="assets/collection-travel.svg" alt="Travel collection" loading="lazy"><div class="collection-label"><div class="label">03</div><h3>Travel</h3></div></a><a class="collection-card reveal" href="shop.html?category=Gift"><img src="assets/collection-gift.svg" alt="Gift collection" loading="lazy"><div class="collection-label"><div class="label">04</div><h3>Gift</h3></div></a></div></div></section>
+<section class="section"><div class="container values"><div><div class="eyebrow label">What guides us</div></div><div class="value reveal"><div class="label">01</div><h3>Considered design</h3><p>Every detail serves a purpose.</p></div><div class="value reveal"><div class="label">02</div><h3>Everyday function</h3><p>Designed around how things are actually used.</p></div><div class="value reveal"><div class="label">03</div><h3>Lasting character</h3><p>Objects designed to become part of your routine.</p></div></div></section>
+<section class="section-tight"><div class="container"><div style="display:flex;justify-content:space-between;gap:20px;align-items:end"><div><div class="eyebrow label">From the journal</div><h2 class="h2" style="margin-top:16px">Notes for a more<br>considered everyday.</h2></div><a class="text-link" href="journal.html">View all</a></div><div class="journal-grid"><a class="article-card reveal" href="article.html"><img src="assets/article-carry.svg" alt="Editorial still life for everyday carry" loading="lazy"><div class="article-copy"><div class="article-meta">Everyday carry · 07 Sep 2026 · 5 min read</div><h3 class="h3">The Art of Everyday Carry</h3><span class="text-link">Read article</span></div></a><a class="article-card reveal" href="article.html?post=minimalist-wallet"><img src="assets/article-wallet.svg" alt="Editorial still life for minimalist wallet guide" loading="lazy"><div class="article-copy"><div class="article-meta">Guides · 02 Sep 2026 · 6 min read</div><h3 class="h3">How to Choose a Minimalist Wallet</h3><span class="text-link">Read article</span></div></a><a class="article-card reveal" href="article.html?post=essentials"><img src="assets/article-everyday.svg" alt="Editorial still life of everyday essentials" loading="lazy"><div class="article-copy"><div class="article-meta">Perspective · 28 Aug 2026 · 4 min read</div><h3 class="h3">Five Essentials for a More Considered Everyday</h3><span class="text-link">Read article</span></div></a></div></div></section>
+<section class="newsletter"><div class="container newsletter-wrap"><div><div class="eyebrow label" style="color:rgba(245,242,236,.6)">A little less noise</div><h2 class="h2" style="margin-top:14px">Stay in the know.<br>Not in the noise.</h2></div><div><p class="lede">New collections, thoughtful stories and occasional offers. Nothing excessive.</p><form class="newsletter-form" onsubmit="event.preventDefault(); toast('You are on the AUREN list'); this.reset();"><input required type="email" placeholder="YOUR EMAIL" aria-label="Email address"><button type="submit">JOIN AUREN</button></form></div></div></section>
+</main>
+
+<footer class="footer"><div class="container"><div class="footer-grid"><div><div class="footer-logo">AUREN</div><p class="muted" style="max-width:340px">Designed for the everyday extraordinary.<br>Premium everyday lifestyle and personal accessories.</p></div><div class="footer-col"><h4>Shop</h4><a href="shop.html">All products</a><a href="collections.html">Collections</a><a href="product.html?id=meridian-wallet">Meridian Wallet</a><a href="product.html?id=no-07-sunglasses">No. 07 Sunglasses</a></div><div class="footer-col"><h4>Help</h4><a href="contact.html">Contact</a><a href="faq.html">Shipping</a><a href="faq.html">Returns</a><a href="faq.html">FAQ</a></div><div class="footer-col"><h4>Follow</h4><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">LinkedIn</a></div></div><div class="footer-bottom"><span>© 2026 AUREN</span><span>Quietly considered. Everyday.</span></div></div></footer>
+<script src="script.js"></script>
+</body>
+</html>
