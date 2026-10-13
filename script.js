@@ -1,12 +1,12 @@
 const PRODUCTS = [
-  {id:'card-holder', name:'Atelier Card Holder', code:'A01', cat:'Carry', price:2490, descriptor:'Slim leather carry', image:'card-holder.svg', href:'product.html?id=card-holder'},
-  {id:'meridian-wallet', name:'Meridian Wallet', code:'A02', cat:'Carry', price:3490, descriptor:'6-card everyday wallet', image:'wallet.svg', href:'product.html?id=meridian-wallet'},
-  {id:'no-07-sunglasses', name:'No. 07 Sunglasses', code:'A03', cat:'Wear', price:4990, descriptor:'Soft-square acetate frame', image:'sunglasses.svg', href:'product.html?id=no-07-sunglasses'},
-  {id:'form-travel-case', name:'Form Travel Case', code:'A04', cat:'Travel', price:3990, descriptor:'Structured travel organizer', image:'travel-case.svg', href:'product.html?id=form-travel-case'},
-  {id:'axis-watch', name:'Axis Field Watch', code:'A05', cat:'Wear', price:7290, descriptor:'Minimal automatic-inspired dial', image:'watch.svg', href:'product.html?id=axis-watch'},
-  {id:'chapter-tote', name:'Chapter Tote', code:'A06', cat:'Carry', price:6490, descriptor:'Structured daily tote', image:'bag.svg', href:'product.html?id=chapter-tote'},
-  {id:'weekend-set', name:'Weekend Carry Set', code:'A07', cat:'Gift', price:8990, descriptor:'Wallet + travel case set', image:'bag.svg', href:'product.html?id=weekend-set'},
-  {id:'belt-01', name:'No. 01 Belt', code:'A08', cat:'Wear', price:3190, descriptor:'Full-grain leather belt', image:'wallet.svg', href:'product.html?id=belt-01'}
+  {id:'card-holder', name:'Atelier Card Holder', code:'A01', cat:'Carry', price:2490, descriptor:'Slim leather carry', image:'assets/card-holder.svg', href:'product.html?id=card-holder'},
+  {id:'meridian-wallet', name:'Meridian Wallet', code:'A02', cat:'Carry', price:3490, descriptor:'6-card everyday wallet', image:'assets/wallet.svg', href:'product.html?id=meridian-wallet'},
+  {id:'no-07-sunglasses', name:'No. 07 Sunglasses', code:'A03', cat:'Wear', price:4990, descriptor:'Soft-square acetate frame', image:'assets/sunglasses.svg', href:'product.html?id=no-07-sunglasses'},
+  {id:'form-travel-case', name:'Form Travel Case', code:'A04', cat:'Travel', price:3990, descriptor:'Structured travel organizer', image:'assets/travel-case.svg', href:'product.html?id=form-travel-case'},
+  {id:'axis-watch', name:'Axis Field Watch', code:'A05', cat:'Wear', price:7290, descriptor:'Minimal automatic-inspired dial', image:'assets/watch.svg', href:'product.html?id=axis-watch'},
+  {id:'chapter-tote', name:'Chapter Tote', code:'A06', cat:'Carry', price:6490, descriptor:'Structured daily tote', image:'assets/bag.svg', href:'product.html?id=chapter-tote'},
+  {id:'weekend-set', name:'Weekend Carry Set', code:'A07', cat:'Gift', price:8990, descriptor:'Wallet + travel case set', image:'assets/bag.svg', href:'product.html?id=weekend-set'},
+  {id:'belt-01', name:'No. 01 Belt', code:'A08', cat:'Wear', price:3190, descriptor:'Full-grain leather belt', image:'assets/wallet.svg', href:'product.html?id=belt-01'}
 ];
 
 const productDetails = {
@@ -43,12 +43,67 @@ function setupGlobal(){
   document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>addToCart(b.dataset.add,Number(b.dataset.qty||1))));
   document.querySelector('[data-search-form]')?.addEventListener('submit',e=>{e.preventDefault(); const q=new FormData(e.currentTarget).get('q').toString().trim(); if(q) window.location.href=`shop.html?q=${encodeURIComponent(q)}`;});
   document.querySelectorAll('.accordion-btn').forEach(b=>b.addEventListener('click',()=>b.closest('.accordion-item').classList.toggle('open')));
-  const io=new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('is-visible')),{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  const io=new IntersectionObserver(es=>{
+    es.forEach((e, i)=>{
+      if(e.isIntersecting) {
+        setTimeout(() => {
+          e.target.classList.add('is-visible');
+        }, i * 100);
+      }
+    });
+  },{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Parallax logic
+  const parallaxEls = document.querySelectorAll('.parallax-bg');
+  if(parallaxEls.length > 0) {
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      parallaxEls.forEach(el => {
+        const speed = el.dataset.speed || 0.4;
+        const yPos = -(scrolled * speed);
+        el.style.transform = `translateY(${yPos}px)`;
+      });
+    }, {passive: true});
+  }
 }
 function productCard(p){return `<article class="product-card reveal"><a href="${p.href}"><div class="product-media"><img src="${p.image}" alt="${p.name}" loading="lazy"><div class="product-overlay"><span>${p.cat}</span><span>${money(p.price)}</span></div></div><div class="product-copy"><h3>${p.name}</h3><p>${p.descriptor}</p></div></a></article>`;}
 function renderFeatured(target='featured-products',filter=null){const el=document.getElementById(target); if(!el)return; let list=PRODUCTS.slice(0,4); if(filter)list=PRODUCTS.filter(p=>filter===p.cat); el.innerHTML=list.map(productCard).join('');}
 function renderShop(){const grid=document.getElementById('shop-grid'); if(!grid)return; const params=new URLSearchParams(location.search); const q=(params.get('q')||'').toLowerCase(); const cat=(params.get('category')||'all').toLowerCase(); let list=PRODUCTS.filter(p=>q?`${p.name} ${p.descriptor}`.toLowerCase().includes(q):true); if(cat!=='all') list=list.filter(p=>p.cat.toLowerCase()===cat); grid.innerHTML=list.map(productCard).join('');}
-function renderProduct(){const mount=document.getElementById('product-page'); if(!mount)return; const id=new URLSearchParams(location.search).get('id')||'meridian-wallet'; const p=PRODUCTS.find(x=>x.id===id) || PRODUCTS[1]; const d=productDetails[id] || productDetails[p.id]; mount.innerHTML=`<section class="product-page"><div class="container product-layout"><div class="product-gallery"><img src="${p.image}" alt="${p.name}"></div><div class="product-copy"><div class="eyebrow label">${p.cat}</div><h1 class="h1">${p.name}</h1><div class="price">${money(p.price)}</div><p>${d.story}</p><div class="product-actions"><button class="button primary" data-add="${p.id}">Add to bag</button></div><div class="details"><div><span>Material</span><strong>${d.material}</strong></div><div><span>Capacity</span><strong>${d.capacity}</strong></div><div><span>Dimensions</span><strong>${d.dimensions}</strong></div></div><p>${d.more}</p></div></div></section>`;}
+function setupTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const parent = btn.closest('.tabs-container');
+      parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const target = parent.querySelector(`#${btn.dataset.target}`);
+      if(target) target.classList.add('active');
+    });
+  });
+}
+
+function renderProduct(){const mount=document.getElementById('product-page'); if(!mount)return; const id=new URLSearchParams(location.search).get('id')||'meridian-wallet'; const p=PRODUCTS.find(x=>x.id===id) || PRODUCTS[1]; const d=productDetails[id] || productDetails[p.id]; mount.innerHTML=`<section class="product-page"><div class="container product-layout"><div class="product-gallery"><img src="${p.image}" alt="${p.name}"></div><div class="product-copy"><div class="eyebrow label">${p.cat}</div><h1 class="h1">${p.name}</h1><div class="price">${money(p.price)}</div><p class="lede" style="margin:24px 0;">${d.story}</p><div class="product-actions"><button class="btn" data-add="${p.id}" style="width:100%;">Add to bag</button></div>
+<div class="tabs-container" style="margin-top:42px;">
+  <div class="tab-header">
+    <button class="tab-btn active" data-target="tab-details">Details</button>
+    <button class="tab-btn" data-target="tab-story">Story</button>
+    <button class="tab-btn" data-target="tab-shipping">Shipping</button>
+  </div>
+  <div class="tab-content">
+    <div class="tab-panel active" id="tab-details">
+      <div class="spec-row"><span>Material</span><strong>${d.material}</strong></div>
+      <div class="spec-row"><span>Capacity</span><strong>${d.capacity}</strong></div>
+      <div class="spec-row"><span>Dimensions</span><strong>${d.dimensions}</strong></div>
+    </div>
+    <div class="tab-panel" id="tab-story">
+      <p style="color:var(--muted); font-size:14px;">${d.more}</p>
+    </div>
+    <div class="tab-panel" id="tab-shipping">
+      <p style="color:var(--muted); font-size:14px;">Free carbon-neutral shipping on orders over ₹5,000.<br>30-day returns on unused items in original packaging.</p>
+    </div>
+  </div>
+</div>
+</div></div></section>`; setupTabs();}
 function renderBagPage(){
   const mount=document.querySelector('[data-bag-items]'); const totalEl=document.querySelector('[data-bag-page-total]'); if(!mount)return;
   function render(){const cart=getCart(); if(!cart.length){mount.innerHTML='<div class="empty-cart" style="border-top:1px solid var(--line)">Your bag is currently quiet.<br><br><a href="shop.html">Shop the collection</a></div>'; if(totalEl) totalEl.textContent='₹0'; return;} mount.innerHTML=cart.map(item=>{const p=PRODUCTS.find(x=>x.id===item.id); return p?`<div class="bag-item"><div class="bag-media"><img src="${p.image}" alt="${p.name}"></div><div class="bag-info"><h3>${p.name}</h3><p>${p.descriptor}</p><div class="qty-row"><button data-decrease="${p.id}">−</button><span>${item.qty}</span><button data-increase="${p.id}">+</button></div></div><div class="bag-price">${money(p.price*item.qty)}</div></div>`:''}).join(''); if(totalEl) totalEl.textContent=money(cart.reduce((sum,item)=>sum+(PRODUCTS.find(p=>p.id===item.id)?.price||0)*item.qty,0)); mount.querySelectorAll('[data-increase]').forEach(btn=>btn.addEventListener('click',()=>{const cart=getCart(); const i=cart.find(x=>x.id===btn.dataset.increase); if(i) i.qty++; saveCart(cart); render();})); mount.querySelectorAll('[data-decrease]').forEach(btn=>btn.addEventListener('click',()=>{const cart=getCart(); const i=cart.find(x=>x.id===btn.dataset.decrease); if(i){if(i.qty>1) i.qty--; else return removeFromCart(i.id);} saveCart(cart); render();})); }

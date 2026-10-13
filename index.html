@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#171716">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -33,23 +33,23 @@
     <a href="shop.html">Shop</a><a href="collections.html">Collections</a><a href="journal.html">Journal</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a>
   </nav>
 </header>
-<div class="search-overlay" data-search><div class="search-panel"><div class="container"><form class="search-row" data-search-form><input aria-label="Search products" name="q" placeholder="Search AUREN" type="search"><button type="submit">Search</button></form></div></div></div>
+<div class="search-overlay" data-search><div class="search-panel"><div class="container"><form class="search-row" data-search-form><input aria-label="Search products" name="q" placeholder="Search AUREN" type="search"><div><button type="submit" class="btn">Search</button><button type="button" class="close-btn" data-close-search style="margin-left: 12px;">Close</button></div></form></div></div></div>
 <div class="drawer" data-drawer><div class="drawer-backdrop" data-drawer-backdrop></div><aside class="drawer-panel" aria-label="Shopping bag"><div class="drawer-head"><span class="label">Your bag</span><button class="close-btn" data-close-cart aria-label="Close bag">Close</button></div><div class="drawer-body"><div data-cart-items></div></div><div class="drawer-footer"><div class="total-row"><span>Subtotal</span><strong data-cart-total>₹0</strong></div><a class="button primary" href="bag.html">Review bag</a></div></aside></div>
 <div class="toast" aria-live="polite"></div>
-<div class="modal" data-modal><img src="meridian-wallet.svg" alt="Expanded product image"></div>
+<div class="modal" data-modal><img src="assets/meridian-wallet.svg" alt="Expanded product image"></div>
 <main>
-<section class="hero">
-  <div class="hero-media" role="img" aria-label="AUREN editorial still life of everyday objects"></div>
+<section class="hero parallax-wrap">
+  <div class="hero-media parallax-bg" data-speed="0.3" role="img" aria-label="AUREN editorial still life of everyday objects"></div>
   <div class="container hero-content reveal is-visible">
     <div class="eyebrow label">The AUREN collection — 01</div>
     <h1 class="display">Designed for the<br>everyday extraordinary.</h1>
-    <p class="lede">Thoughtfully designed essentials that bring function, form and quiet character to the things you carry every day.</p>
+    <p class="lede">Thoughtfully designed essentials that bring function, form and quiet character to the things you carry every day. We believe that true luxury whispers—it’s found in the weight of a well-made object and the calm it brings to your routine.</p>
     <div class="hero-actions"><a class="btn light" href="collections.html">Explore collection</a><a class="btn secondary" href="about.html">Discover AUREN</a></div>
   </div>
 </section>
 <section class="section"><div class="container philosophy reveal"><div><div class="eyebrow label">The AUREN philosophy</div></div><div class="philosophy-copy"><h2 class="h2">Less,<br>but better.</h2><p>We believe in essentials that do more than just function. AUREN pieces are designed to be carried every day, to age beautifully and to feel quietly unmistakable.</p></div></div></section>
 <section class="section-tight"><div class="container"><div class="eyebrow label">The everyday edit</div><div id="featured-products" class="products-grid"></div></div></section>
-<section class="section" style="padding-top:110px"><div class="editorial-split reveal"><div class="editorial-visual"><img src="article-everyday.svg" alt="Still life of AUREN everyday objects"></div><div class="editorial-copy"><div class="eyebrow label">A different rhythm</div><h2 class="h2">Objects with presence, not noise.</h2><p>Intentional design lives in proportion, material and usefulness. We create pieces that feel calm, useful and enduring.</p><a class="link-arrow" href="journal.html">Read the journal</a></div></div></section>
+<section class="section" style="padding-top:110px"><div class="editorial-split reveal"><div class="editorial-visual parallax-wrap"><img src="assets/article-everyday.svg" class="parallax-bg" data-speed="0.15" alt="Still life of AUREN everyday objects"></div><div class="editorial-copy"><div class="eyebrow label">A different rhythm</div><h2 class="h2">Objects with presence, not noise.</h2><p>Intentional design lives in proportion, material and usefulness. We create pieces that feel calm, useful and enduring.</p><a class="link-arrow" href="journal.html">Read the journal</a></div></div></section>
 <section class="section-tight"><div class="container"><div class="eyebrow label">Find your everyday</div><div class="collections-grid"><a class="collection-card reveal" href="shop.html?category=Carry"><div class="collection-art carry"></div><div class="collection-meta"><h3>Carry</h3><span>Leather essentials</span></div></a><a class="collection-card reveal" href="shop.html?category=Wear"><div class="collection-art wear"></div><div class="collection-meta"><h3>Wear</h3><span>Quiet accents</span></div></a><a class="collection-card reveal" href="shop.html?category=Travel"><div class="collection-art travel"></div><div class="collection-meta"><h3>Travel</h3><span>Portable order</span></div></a><a class="collection-card reveal" href="shop.html?category=Gift"><div class="collection-art gift"></div><div class="collection-meta"><h3>Gift</h3><span>Thoughtful pairs</span></div></a></div></div></section>
 <section class="section"><div class="container values"><div><div class="eyebrow label">What guides us</div></div><div class="value reveal"><div class="label">01</div><h3>Considered design</h3><p>Every line, form and finish is chosen to be useful and enduring.</p></div><div class="value reveal"><div class="label">02</div><h3>Material honesty</h3><p>We favour tactile, long-lived materials that feel better over time.</p></div><div class="value reveal"><div class="label">03</div><h3>Quiet confidence</h3><p>Everyday essentials should bring ease, not excess.</p></div></div></section>
 <section class="section-tight"><div class="container"><div style="display:flex;justify-content:space-between;gap:20px;align-items:end"><div><div class="eyebrow label">From the journal</div><h2 class="h2">Notes on living well.</h2></div><a class="link-arrow" href="journal.html">View all</a></div><div class="journal-grid"></div></div></section>
