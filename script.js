@@ -56,13 +56,20 @@ function setupGlobal(){
   // Parallax logic
   const parallaxEls = document.querySelectorAll('.parallax-bg');
   if(parallaxEls.length > 0) {
+    let ticking = false;
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      parallaxEls.forEach(el => {
-        const speed = el.dataset.speed || 0.4;
-        const yPos = -(scrolled * speed);
-        el.style.transform = `translateY(${yPos}px)`;
-      });
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.scrollY;
+          parallaxEls.forEach(el => {
+            const speed = el.dataset.speed || 0.4;
+            const yPos = -(scrolled * speed);
+            el.style.transform = `translateY(${yPos}px)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
     }, {passive: true});
   }
 }
