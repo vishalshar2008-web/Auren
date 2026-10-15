@@ -56,13 +56,23 @@ function setupGlobal(){
   // Parallax logic
   const parallaxEls = document.querySelectorAll('.parallax-bg');
   if(parallaxEls.length > 0) {
+    let ticking = false;
+    let lastKnownScrollPosition = 0;
     window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      parallaxEls.forEach(el => {
-        const speed = el.dataset.speed || 0.4;
-        const yPos = -(scrolled * speed);
-        el.style.transform = `translateY(${yPos}px)`;
-      });
+      lastKnownScrollPosition = window.scrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          parallaxEls.forEach(el => {
+            const speed = el.dataset.speed || 0.4;
+            const yPos = -(lastKnownScrollPosition * speed);
+            // ⚡ Bolt Performance Optimization:
+            // Throttled via requestAnimationFrame and using translate3d for GPU acceleration.
+            el.style.transform = `translate3d(0, ${yPos}px, 0)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
     }, {passive: true});
   }
 }

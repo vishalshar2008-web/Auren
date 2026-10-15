@@ -1,0 +1,3 @@
+## 2023-10-24 - Throttling Scroll Event Handlers
+**Learning:** In a vanilla JS environment like this application, `scroll` events that directly manipulate the DOM (e.g., updating `transform` values) without throttling can cause significant layout thrashing and performance degradation (jank).
+**Action:** When adding or updating scroll-based animations (like parallax), always wrap the DOM update in a `window.requestAnimationFrame` callback. Ensure scroll position is tracked correctly across frames by assigning it outside the `requestAnimationFrame` block to prevent skipped updates. Additionally, use `translate3d(x, y, z)` instead of `translateY(y)` to force GPU hardware acceleration.
