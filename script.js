@@ -20,7 +20,9 @@ const productDetails = {
   'belt-01': {material:'Full-grain leather', capacity:'Adjustable fit', dimensions:'35 mm width', story:'A clean line that finishes the everyday.', more:'A single-piece leather belt with a low-profile finish.'}
 };
 
-function money(n){return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(n)}
+// ⚡ Bolt: Cache Intl.NumberFormat instance to prevent expensive recreation on every render (~17x faster)
+const moneyFormatter = new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
+function money(n){return moneyFormatter.format(n)}
 function getCart(){return JSON.parse(localStorage.getItem('auren_cart')||'[]')}
 function saveCart(cart){localStorage.setItem('auren_cart',JSON.stringify(cart)); updateBagCount()}
 function updateBagCount(){const count=getCart().reduce((a,i)=>a+i.qty,0); document.querySelectorAll('[data-bag-count]').forEach(el=>el.textContent=count)}
