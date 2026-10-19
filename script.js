@@ -48,6 +48,7 @@ function setupGlobal(){
   const io=new IntersectionObserver(es=>{
     es.forEach((e, i)=>{
       if(e.isIntersecting) {
+        io.unobserve(e.target); // ⚡ Bolt: Unobserve elements after revealing to prevent unnecessary intersection calculations on subsequent scrolls
         setTimeout(() => {
           e.target.classList.add('is-visible');
         }, i * 100);
