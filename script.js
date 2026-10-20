@@ -45,9 +45,11 @@ function setupGlobal(){
   document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>addToCart(b.dataset.add,Number(b.dataset.qty||1))));
   document.querySelector('[data-search-form]')?.addEventListener('submit',e=>{e.preventDefault(); const q=new FormData(e.currentTarget).get('q').toString().trim(); if(q) window.location.href=`shop.html?q=${encodeURIComponent(q)}`;});
   document.querySelectorAll('.accordion-btn').forEach(b=>b.addEventListener('click',()=>b.closest('.accordion-item').classList.toggle('open')));
+  // ⚡ Bolt: Unobserve reveal elements after first intersection to prevent unnecessary scroll overhead
   const io=new IntersectionObserver(es=>{
     es.forEach((e, i)=>{
       if(e.isIntersecting) {
+        io.unobserve(e.target);
         setTimeout(() => {
           e.target.classList.add('is-visible');
         }, i * 100);
