@@ -23,8 +23,11 @@ const productDetails = {
 // ⚡ Bolt: Cache Intl.NumberFormat instance to prevent expensive recreation on every render (~17x faster)
 const moneyFormatter = new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
 function money(n){return moneyFormatter.format(n)}
-function getCart(){return JSON.parse(localStorage.getItem('auren_cart')||'[]')}
-function saveCart(cart){localStorage.setItem('auren_cart',JSON.stringify(cart)); updateBagCount()}
+
+// ⚡ Bolt: Cache cart to prevent synchronous localStorage reads and JSON.parse overhead
+let cachedCart = null;
+function getCart(){if(!cachedCart)cachedCart=JSON.parse(localStorage.getItem('auren_cart')||'[]');return cachedCart;}
+function saveCart(cart){cachedCart=cart;localStorage.setItem('auren_cart',JSON.stringify(cart)); updateBagCount()}
 function updateBagCount(){const count=getCart().reduce((a,i)=>a+i.qty,0); document.querySelectorAll('[data-bag-count]').forEach(el=>el.textContent=count)}
 function addToCart(id, qty=1){const cart=getCart(); const item=cart.find(i=>i.id===id); if(item)item.qty+=qty; else cart.push({id,qty}); saveCart(cart); openCart(); toast('Added to bag');}
 function removeFromCart(id){saveCart(getCart().filter(i=>i.id!==id)); renderCart()}
