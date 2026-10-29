@@ -55,16 +55,19 @@ function setupGlobal(){
     });
   },{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // Parallax logic
+  // ⚡ Bolt: Cache DOM properties (dataset.speed) to prevent expensive DOM reads on every scroll event frame
   const parallaxEls = document.querySelectorAll('.parallax-bg');
   if(parallaxEls.length > 0) {
+    const cachedParallaxEls = Array.from(parallaxEls).map(el => ({
+      el,
+      speed: parseFloat(el.dataset.speed || 0.4)
+    }));
     let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrolled = window.scrollY;
-          parallaxEls.forEach(el => {
-            const speed = el.dataset.speed || 0.4;
+          cachedParallaxEls.forEach(({ el, speed }) => {
             const yPos = -(scrolled * speed);
             el.style.transform = `translateY(${yPos}px)`;
           });
