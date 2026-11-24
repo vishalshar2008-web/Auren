@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://auren.example/</loc></url>
-  <url><loc>https://auren.example/shop.html</loc></url>
-  <url><loc>https://auren.example/collections.html</loc></url>
-  <url><loc>https://auren.example/journal.html</loc></url>
-  <url><loc>https://auren.example/article.html</loc></url>
-  <url><loc>https://auren.example/about.html</loc></url>
-  <url><loc>https://auren.example/contact.html</loc></url>
-  <url><loc>https://auren.example/faq.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/shop.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/collections.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/card-holder.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/meridian-wallet.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/no-07-sunglasses.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/form-travel-case.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/axis-watch.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/chapter-tote.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/weekend-set.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/products/belt-01.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/journal.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/journal/everyday-carry.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/journal/minimalist-wallet.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/journal/essentials.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/about.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/faq.html</loc></url>
+  <url><loc>https://auren-uoxc.vercel.app/contact.html</loc></url>
 </urlset>
