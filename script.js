@@ -1,123 +1,214 @@
-const PRODUCTS = [
-  {id:'card-holder', name:'Atelier Card Holder', code:'A01', cat:'Carry', price:2490, descriptor:'Slim leather carry', image:'assets/card-holder.svg', href:'product.html?id=card-holder'},
-  {id:'meridian-wallet', name:'Meridian Wallet', code:'A02', cat:'Carry', price:3490, descriptor:'6-card everyday wallet', image:'assets/wallet.svg', href:'product.html?id=meridian-wallet'},
-  {id:'no-07-sunglasses', name:'No. 07 Sunglasses', code:'A03', cat:'Wear', price:4990, descriptor:'Soft-square acetate frame', image:'assets/sunglasses.svg', href:'product.html?id=no-07-sunglasses'},
-  {id:'form-travel-case', name:'Form Travel Case', code:'A04', cat:'Travel', price:3990, descriptor:'Structured travel organizer', image:'assets/travel-case.svg', href:'product.html?id=form-travel-case'},
-  {id:'axis-watch', name:'Axis Field Watch', code:'A05', cat:'Wear', price:7290, descriptor:'Minimal automatic-inspired dial', image:'assets/watch.svg', href:'product.html?id=axis-watch'},
-  {id:'chapter-tote', name:'Chapter Tote', code:'A06', cat:'Carry', price:6490, descriptor:'Structured daily tote', image:'assets/bag.svg', href:'product.html?id=chapter-tote'},
-  {id:'weekend-set', name:'Weekend Carry Set', code:'A07', cat:'Gift', price:8990, descriptor:'Wallet + travel case set', image:'assets/bag.svg', href:'product.html?id=weekend-set'},
-  {id:'belt-01', name:'No. 01 Belt', code:'A08', cat:'Wear', price:3190, descriptor:'Full-grain leather belt', image:'assets/wallet.svg', href:'product.html?id=belt-01'}
-];
+import { articles, categories, products } from './source/catalog.mjs';
 
-const productDetails = {
-  'meridian-wallet': {material:'Vegetable-tanned leather', capacity:'6 cards + folded notes', dimensions:'105 × 75 mm', story:'Designed for those who prefer to carry only what matters.', more:'A compact profile with a soft-touch finish for everyday carry.'},
-  'card-holder': {material:'Vegetable-tanned leather', capacity:'4 cards + central slot', dimensions:'100 × 68 mm', story:'A compact silhouette for the essentials.', more:'An intentionally slim card holder with a disciplined profile.'},
-  'no-07-sunglasses': {material:'Acetate frame + CR39 lenses', capacity:'Protective case included', dimensions:'52–19–145 mm', story:'A quieter frame, made for daily rotation.', more:'Soft-squared forms that feel relaxed and refined.'},
-  'form-travel-case': {material:'Waxed canvas + vegetable-tanned leather', capacity:'Cables, cards, passport & small essentials', dimensions:'220 × 120 × 55 mm', story:'A place for the small things you carry with you.', more:'Structured compartments for travel without visual noise.'},
-  'axis-watch': {material:'Brushed steel + leather strap', capacity:'3 ATM everyday wear', dimensions:'38 mm case', story:'A calm dial for busy days.', more:'A proportion-first design with a restrained, refined silhouette.'},
-  'chapter-tote': {material:'Cotton canvas + leather handles', capacity:'13-inch laptop + daily carry', dimensions:'410 × 320 × 110 mm', story:'A considered tote for everything between the door and the desk.', more:'A thoughtful carry for objects, work and movement.'},
-  'weekend-set': {material:'Leather + waxed canvas', capacity:'2-piece set', dimensions:'Varies by piece', story:'Two everyday objects, composed as one gift.', more:'A paired set built around carry and calm.'},
-  'belt-01': {material:'Full-grain leather', capacity:'Adjustable fit', dimensions:'35 mm width', story:'A clean line that finishes the everyday.', more:'A single-piece leather belt with a low-profile finish.'}
-};
+const productById = new Map(products.map(product => [product.id, product]));
+const money = new Intl.NumberFormat('en-IN', {
+  style: 'currency', currency: 'INR', maximumFractionDigits: 0,
+});
+const bagKey = 'auren_cart';
+const quantityLimit = 99;
+let memoryBag = [];
+let useMemoryBag = false;
 
-// ⚡ Bolt: Cache Intl.NumberFormat instance to prevent expensive recreation on every render (~17x faster)
-const moneyFormatter = new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0});
-function money(n){return moneyFormatter.format(n)}
-function getCart(){return JSON.parse(localStorage.getItem('auren_cart')||'[]')}
-function saveCart(cart){localStorage.setItem('auren_cart',JSON.stringify(cart)); updateBagCount()}
-function updateBagCount(){const count=getCart().reduce((a,i)=>a+i.qty,0); document.querySelectorAll('[data-bag-count]').forEach(el=>el.textContent=count)}
-function addToCart(id, qty=1){const cart=getCart(); const item=cart.find(i=>i.id===id); if(item)item.qty+=qty; else cart.push({id,qty}); saveCart(cart); openCart(); toast('Added to bag');}
-function removeFromCart(id){saveCart(getCart().filter(i=>i.id!==id)); renderCart()}
-function renderCart(){const wrap=document.querySelector('[data-cart-items]'); const totalEl=document.querySelector('[data-cart-total]'); if(!wrap)return; const cart=getCart(); if(!cart.length){wrap.innerHTML='<div class="empty-cart">Your bag is currently quiet.</div>'; if(totalEl) totalEl.textContent='₹0'; return;} wrap.innerHTML=cart.map(item=>{const p=PRODUCTS.find(x=>x.id===item.id); return p?`<div class="cart-item"><div class="cart-media"><img src="${p.image}" alt="${p.name}"></div><div class="cart-copy"><h4>${p.name}</h4><p>${money(p.price)} × ${item.qty}</p></div><button class="text-btn" data-remove="${p.id}">Remove</button></div>`:''}).join(''); if(totalEl) totalEl.textContent=money(cart.reduce((sum,item)=>sum+PRODUCTS.find(p=>p.id===item.id).price*item.qty,0)); wrap.querySelectorAll('[data-remove]').forEach(btn=>btn.addEventListener('click',()=>removeFromCart(btn.dataset.remove)));}
-function openCart(){document.querySelector('[data-drawer]')?.classList.add('open'); renderCart()}
-function closeCart(){document.querySelector('[data-drawer]')?.classList.remove('open')}
-function toast(msg){const el=document.querySelector('.toast'); if(!el)return; el.textContent=msg; el.classList.add('show'); clearTimeout(window.__toast); window.__toast=setTimeout(()=>el.classList.remove('show'),1800);}
-function setupGlobal(){
-  updateBagCount();
-  const header=document.querySelector('.site-header');
-  const onScroll=()=>header?.classList.toggle('scrolled',window.scrollY>8); onScroll(); window.addEventListener('scroll',onScroll,{passive:true});
-  document.querySelectorAll('[data-open-search]').forEach(b=>b.addEventListener('click',()=>document.querySelector('[data-search]').classList.add('open')));
-  document.querySelectorAll('[data-close-search]').forEach(b=>b.addEventListener('click',()=>document.querySelector('[data-search]').classList.remove('open')));
-  document.querySelectorAll('[data-open-cart]').forEach(b=>b.addEventListener('click',openCart));
-  document.querySelectorAll('[data-close-cart]').forEach(b=>b.addEventListener('click',closeCart));
-  document.querySelector('[data-drawer-backdrop]')?.addEventListener('click',closeCart);
-  document.querySelectorAll('[data-mobile-toggle]').forEach(b=>b.addEventListener('click',()=>document.querySelector('.mobile-nav')?.classList.toggle('open')));
-  document.querySelectorAll('[data-add]').forEach(b=>b.addEventListener('click',()=>addToCart(b.dataset.add,Number(b.dataset.qty||1))));
-  document.querySelector('[data-search-form]')?.addEventListener('submit',e=>{e.preventDefault(); const q=new FormData(e.currentTarget).get('q').toString().trim(); if(q) window.location.href=`shop.html?q=${encodeURIComponent(q)}`;});
-  document.querySelectorAll('.accordion-btn').forEach(b=>b.addEventListener('click',()=>b.closest('.accordion-item').classList.toggle('open')));
-  const io=new IntersectionObserver(es=>{
-    es.forEach((e, i)=>{
-      if(e.isIntersecting) {
-        setTimeout(() => {
-          e.target.classList.add('is-visible');
-        }, i * 100);
-      }
-    });
-  },{threshold:.12}); document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+function readBag() {
+  if (useMemoryBag) return memoryBag;
+  let rows;
+  try {
+    rows = JSON.parse(localStorage.getItem(bagKey) || '[]');
+  } catch {
+    return memoryBag;
+  }
+  if (!Array.isArray(rows)) return [];
+  const quantities = new Map();
+  for (const row of rows) {
+    if (!productById.has(row?.id) || !Number.isSafeInteger(row.qty) || row.qty < 1) continue;
+    quantities.set(row.id, Math.min(quantityLimit, (quantities.get(row.id) || 0) + row.qty));
+  }
+  return Array.from(quantities, ([id, qty]) => ({ id, qty }));
+}
 
-  // Parallax logic
-  const parallaxEls = document.querySelectorAll('.parallax-bg');
-  if(parallaxEls.length > 0) {
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const scrolled = window.scrollY;
-          parallaxEls.forEach(el => {
-            const speed = el.dataset.speed || 0.4;
-            const yPos = -(scrolled * speed);
-            el.style.transform = `translateY(${yPos}px)`;
-          });
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, {passive: true});
+function updateQuantity(id, amount) {
+  if (!productById.has(id)) return;
+  const bag = new Map(readBag().map(row => [row.id, row.qty]));
+  const next = amount === 'remove' ? 0 : Math.min(quantityLimit, (bag.get(id) || 0) + amount);
+  if (next > 0) bag.set(id, next);
+  else bag.delete(id);
+  memoryBag = Array.from(bag, ([productId, qty]) => ({ id: productId, qty }));
+  try {
+    localStorage.setItem(bagKey, JSON.stringify(memoryBag));
+  } catch {
+    useMemoryBag = true;
+  }
+  renderBag(memoryBag);
+}
+
+function bagLine(row, mode) {
+  const product = productById.get(row.id);
+  const href = `products/${product.id}.html`;
+  const controls = mode === 'review'
+    ? `<p>Quantity ${row.qty}</p>`
+    : `<div class="bag-quantity" aria-label="Quantity">
+        <button type="button" data-id="${row.id}" data-change="-1" aria-label="Decrease quantity of ${product.name}">−</button>
+        <span aria-live="polite">${row.qty}</span>
+        <button type="button" data-id="${row.id}" data-change="1" aria-label="Increase quantity of ${product.name}" ${row.qty === quantityLimit ? 'disabled' : ''}>+</button>
+      </div><button type="button" class="remove-button" data-id="${row.id}" data-change="remove" aria-label="Remove ${product.name}">Remove</button>`;
+  return `<article class="bag-line">
+    <a href="${href}" tabindex="-1" aria-hidden="true"><img src="assets/catalog/${product.id}.webp" alt=""></a>
+    <div><h3><a href="${href}">${product.name}</a></h3><p>${product.color} · ${money.format(product.price)} each</p>${controls}</div>
+    <strong>${money.format(product.price * row.qty)}</strong>
+  </article>`;
+}
+
+function renderBag(bag = readBag()) {
+  const count = bag.reduce((total, row) => total + row.qty, 0);
+  const subtotal = bag.reduce((total, row) => total + productById.get(row.id).price * row.qty, 0);
+  const trigger = document.querySelector('[data-open-bag]');
+  const previous = document.activeElement;
+  const previousList = previous?.closest('[data-bag-items]');
+  trigger.setAttribute('aria-label', `Shopping bag, ${count} ${count === 1 ? 'item' : 'items'}`);
+  trigger.querySelector('[data-bag-count]').textContent = count;
+  for (const element of document.querySelectorAll('[data-subtotal]')) {
+    element.textContent = money.format(subtotal);
+  }
+  for (const list of document.querySelectorAll('[data-bag-items]')) {
+    list.innerHTML = bag.length
+      ? bag.map(row => bagLine(row, list.dataset.bagItems)).join('')
+      : `<div class="empty-state"><h2>${list.dataset.bagItems === 'review' ? 'Your selection is empty' : 'Your bag is empty'}</h2><p>Explore the collection to save an object.</p><a class="text-link" href="shop.html">Browse the collection <span class="arrow" aria-hidden="true"></span></a></div>`;
+  }
+  for (const link of document.querySelectorAll('[data-checkout], .drawer-bottom')) {
+    link.hidden = count === 0;
+  }
+  if (previousList) {
+    const controls = Array.from(previousList.querySelectorAll('[data-change]:not(:disabled)'));
+    const match = controls.find(control => control.dataset.id === previous.dataset.id && control.dataset.change === previous.dataset.change);
+    (match || controls[0] || previousList.querySelector('a'))?.focus();
   }
 }
-function productCard(p){return `<article class="product-card reveal"><a href="${p.href}"><div class="product-media"><img src="${p.image}" alt="${p.name}" loading="lazy"><div class="product-overlay"><span>${p.cat}</span><span>${money(p.price)}</span></div></div><div class="product-copy"><h3>${p.name}</h3><p>${p.descriptor}</p></div></a></article>`;}
-function renderFeatured(target='featured-products',filter=null){const el=document.getElementById(target); if(!el)return; let list=PRODUCTS.slice(0,4); if(filter)list=PRODUCTS.filter(p=>filter===p.cat); el.innerHTML=list.map(productCard).join('');}
-function renderShop(){const grid=document.getElementById('shop-grid'); if(!grid)return; const params=new URLSearchParams(location.search); const q=(params.get('q')||'').toLowerCase(); const cat=(params.get('category')||'all').toLowerCase(); let list=PRODUCTS.filter(p=>q?`${p.name} ${p.descriptor}`.toLowerCase().includes(q):true); if(cat!=='all') list=list.filter(p=>p.cat.toLowerCase()===cat); grid.innerHTML=list.map(productCard).join('');}
-function setupTabs() {
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const parent = btn.closest('.tabs-container');
-      parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      const target = parent.querySelector(`#${btn.dataset.target}`);
-      if(target) target.classList.add('active');
-    });
+
+function setupDialogs() {
+  const bag = document.querySelector('#bag-dialog');
+  const galleryImage = document.querySelector('.gallery-main img');
+  const zoomImage = document.querySelector('[data-zoom-image]');
+
+  document.addEventListener('click', event => {
+    const button = event.target.closest('[data-show], [data-close], [data-add], [data-change], [data-open-bag], [data-gallery-image]');
+    if (!button) return;
+
+    if (button.hasAttribute('data-open-bag')) {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      renderBag();
+      bag.showModal();
+    } else if (button.hasAttribute('data-add')) {
+      updateQuantity(button.dataset.add, 1);
+      bag.showModal();
+    } else if (button.hasAttribute('data-change')) {
+      const amount = button.dataset.change;
+      updateQuantity(button.dataset.id, amount === 'remove' ? amount : Number(amount));
+    } else if (button.hasAttribute('data-show')) {
+      const dialog = document.getElementById(button.dataset.show);
+      if (dialog.id === 'image-dialog') {
+        zoomImage.src = galleryImage.src;
+        zoomImage.alt = galleryImage.alt;
+      }
+      dialog.showModal();
+    } else if (button.hasAttribute('data-close')) {
+      button.closest('dialog').close();
+    } else {
+      galleryImage.src = button.dataset.galleryImage;
+      galleryImage.alt = button.dataset.imageAlt;
+      for (const thumb of document.querySelectorAll('[data-gallery-image]')) {
+        thumb.setAttribute('aria-pressed', String(thumb === button));
+      }
+    }
   });
+
+  for (const dialog of document.querySelectorAll('dialog')) {
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const { left, right, top, bottom } = dialog.getBoundingClientRect();
+      if (event.clientX < left || event.clientX > right || event.clientY < top || event.clientY > bottom) dialog.close();
+    });
+  }
 }
 
-function renderProduct(){const mount=document.getElementById('product-page'); if(!mount)return; const id=new URLSearchParams(location.search).get('id')||'meridian-wallet'; const p=PRODUCTS.find(x=>x.id===id) || PRODUCTS[1]; const d=productDetails[id] || productDetails[p.id]; mount.innerHTML=`<section class="product-page"><div class="container product-layout"><div class="product-gallery"><img src="${p.image}" alt="${p.name}"></div><div class="product-copy"><div class="eyebrow label">${p.cat}</div><h1 class="h1">${p.name}</h1><div class="price">${money(p.price)}</div><p class="lede" style="margin:24px 0;">${d.story}</p><div class="product-actions"><button class="btn" data-add="${p.id}" style="width:100%;">Add to bag</button></div>
-<div class="tabs-container" style="margin-top:42px;">
-  <div class="tab-header">
-    <button class="tab-btn active" data-target="tab-details">Details</button>
-    <button class="tab-btn" data-target="tab-story">Story</button>
-    <button class="tab-btn" data-target="tab-shipping">Shipping</button>
-  </div>
-  <div class="tab-content">
-    <div class="tab-panel active" id="tab-details">
-      <div class="spec-row"><span>Material</span><strong>${d.material}</strong></div>
-      <div class="spec-row"><span>Capacity</span><strong>${d.capacity}</strong></div>
-      <div class="spec-row"><span>Dimensions</span><strong>${d.dimensions}</strong></div>
-    </div>
-    <div class="tab-panel" id="tab-story">
-      <p style="color:var(--muted); font-size:14px;">${d.more}</p>
-    </div>
-    <div class="tab-panel" id="tab-shipping">
-      <p style="color:var(--muted); font-size:14px;">Free carbon-neutral shipping on orders over ₹5,000.<br>30-day returns on unused items in original packaging.</p>
-    </div>
-  </div>
-</div>
-</div></div></section>`; setupTabs();}
-function renderBagPage(){
-  const mount=document.querySelector('[data-bag-items]'); const totalEl=document.querySelector('[data-bag-page-total]'); if(!mount)return;
-  function render(){const cart=getCart(); if(!cart.length){mount.innerHTML='<div class="empty-cart" style="border-top:1px solid var(--line)">Your bag is currently quiet.<br><br><a href="shop.html">Shop the collection</a></div>'; if(totalEl) totalEl.textContent='₹0'; return;} mount.innerHTML=cart.map(item=>{const p=PRODUCTS.find(x=>x.id===item.id); return p?`<div class="bag-item"><div class="bag-media"><img src="${p.image}" alt="${p.name}"></div><div class="bag-info"><h3>${p.name}</h3><p>${p.descriptor}</p><div class="qty-row"><button data-decrease="${p.id}">−</button><span>${item.qty}</span><button data-increase="${p.id}">+</button></div></div><div class="bag-price">${money(p.price*item.qty)}</div></div>`:''}).join(''); if(totalEl) totalEl.textContent=money(cart.reduce((sum,item)=>sum+(PRODUCTS.find(p=>p.id===item.id)?.price||0)*item.qty,0)); mount.querySelectorAll('[data-increase]').forEach(btn=>btn.addEventListener('click',()=>{const cart=getCart(); const i=cart.find(x=>x.id===btn.dataset.increase); if(i) i.qty++; saveCart(cart); render();})); mount.querySelectorAll('[data-decrease]').forEach(btn=>btn.addEventListener('click',()=>{const cart=getCart(); const i=cart.find(x=>x.id===btn.dataset.decrease); if(i){if(i.qty>1) i.qty--; else return removeFromCart(i.id);} saveCart(cart); render();})); }
-  render();
-}
-function setupModal(){const m=document.querySelector('[data-modal]'); if(!m)return; m.addEventListener('click',()=>m.classList.remove('open')); const img=m.querySelector('img'); img?.addEventListener('click',e=>e.stopPropagation());}
+function setupCatalog() {
+  const form = document.querySelector('#catalog-filters');
+  if (!form) return;
+  const grid = document.querySelector('#catalog-grid');
+  const cards = new Map(Array.from(grid.children, card => [card.dataset.product, card]));
+  const count = document.querySelector('#result-count');
+  const empty = document.querySelector('#catalog-empty');
+  const reset = document.querySelector('[data-reset-search]');
+  const filters = Array.from(form.querySelectorAll('button[name="category"]'));
+  const sort = form.elements.sort;
 
-document.addEventListener('DOMContentLoaded',()=>{setupGlobal(); renderFeatured(); renderShop(); renderProduct(); renderBagPage(); setupModal(); renderCart();});
+  function renderCatalog() {
+    const params = new URLSearchParams(location.search);
+    const query = (params.get('q') || '').trim().slice(0, 100);
+    const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+    const category = categories.find(item => item.id.toLowerCase() === params.get('category')?.toLowerCase()
+      || item.label.toLowerCase() === params.get('category')?.toLowerCase())?.id || 'all';
+    const order = params.get('sort');
+    sort.value = order === 'low' || order === 'high' ? order : 'featured';
+
+    const matches = products.filter(product => {
+      const searchable = `${product.name} ${product.category} ${product.color} ${product.summary} ${product.material}`.toLowerCase();
+      return (category === 'all' || product.category === category) && terms.every(term => searchable.includes(term));
+    });
+    if (sort.value !== 'featured') {
+      matches.sort((a, b) => sort.value === 'low' ? a.price - b.price : b.price - a.price);
+    }
+
+    filters.forEach(filter => filter.setAttribute('aria-pressed', String(filter.value === category)));
+    grid.replaceChildren(...matches.map(product => cards.get(product.id)));
+    empty.hidden = matches.length > 0;
+    count.textContent = `${matches.length} ${matches.length === 1 ? 'object' : 'objects'}${query ? ` for “${query}”` : ''}`;
+    reset.hidden = !query;
+  }
+
+  function setFilter(key, value, defaultValue) {
+    const url = new URL(location.href);
+    if (value === defaultValue) url.searchParams.delete(key);
+    else url.searchParams.set(key, value);
+    history.pushState(null, '', url);
+    renderCatalog();
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    setFilter('category', event.submitter?.value || 'all', 'all');
+  });
+  sort.addEventListener('change', () => setFilter('sort', sort.value, 'featured'));
+  window.addEventListener('popstate', renderCatalog);
+  renderCatalog();
+}
+
+function redirectLegacy() {
+  const params = new URLSearchParams(location.search);
+  const page = document.body.dataset.legacy;
+  if (page === 'product') {
+    const id = params.get('id') || 'meridian-wallet';
+    location.replace(productById.has(id) ? `products/${id}.html` : 'shop.html');
+  } else if (page === 'article') {
+    const id = params.get('post') || 'everyday-carry';
+    location.replace(articles.some(article => article.id === id) ? `journal/${id}.html` : 'journal.html');
+  }
+  return Boolean(page);
+}
+
+if (!redirectLegacy()) {
+  setupDialogs();
+  document.querySelector('.skip-link').addEventListener('click', event => {
+    event.preventDefault();
+    document.getElementById('main').focus();
+    document.getElementById('main').scrollIntoView();
+  });
+  setupCatalog();
+  renderBag();
+  window.addEventListener('storage', event => {
+    if (event.key === bagKey || event.key === null) renderBag();
+  });
+  const fragment = location.hash.slice(1);
+  const target = document.getElementById(fragment);
+  if (target instanceof HTMLDetailsElement) target.open = true;
+}
